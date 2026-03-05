@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Weather App - Real-Time Data</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🌤️ Real-Time Weather</h1>
+      <div class="header-buttons">
+        <button title="Edit">✎</button>
+        <button title="Refresh" onclick="refreshWeather()">🔄</button>
+      </div>
+    </header>
+
+    <div class="search-bar">
+      <select id="citySelect"></select>
+    </div>
+
+    <div class="error" id="errorMsg"></div>
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      Loading weather data...
+    </div>
+
+    <div class="weather-card" id="weatherCard" style="display:none;">
+      <h2 id="cityName">--</h2>
+      <div class="temp" id="temp">--°C</div>
+      <div class="condition" id="condition">--</div>
+      <div class="range" id="range">--°C ~ --°C</div>
+
+      <div class="weather-details">
+        <div class="detail-item">
+          <div class="detail-label">💧 Humidity</div>
+          <div class="detail-value" id="humidity">--%</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">🌧️ Rain (3h)</div>
+          <div class="detail-value" id="rain">-- mm</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">💨 Wind Speed</div>
+          <div class="detail-value" id="windSpeed">-- m/s</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">🔽 Pressure</div>
+          <div class="detail-value" id="pressure">-- hPa</div>
+        </div>
+
+        <div class="aqi-box">
+          <div class="aqi-label">📊 Air Quality Index (1-5 Scale)</div>
+          <div class="aqi-content">
+            <div class="aqi-indicator">
+              <div class="aqi-value" id="aqiValue">--</div>
+              <div class="aqi-text" id="aqiStatus">Loading...</div>
+            </div>
+          </div>
+          
+          <div class="pollutant-details">
+            <div class="pollutant-item">
+              <div class="pollutant-item-label">PM2.5</div>
+              <div class="pollutant-item-value" id="pm25">--</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-item-label">PM10</div>
+              <div class="pollutant-item-value" id="pm10">--</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-item-label">O₃</div>
+              <div class="pollutant-item-value" id="o3">--</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-item-label">NO₂</div>
+              <div class="pollutant-item-value" id="no2">--</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-item-label">SO₂</div>
+              <div class="pollutant-item-value" id="so2">--</div>
+            </div>
+            <div class="pollutant-item">
+              <div class="pollutant-item-label">CO</div>
+              <div class="pollutant-item-value" id="co">--</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="forecast" id="forecastSection" style="display:none;">
+      <h3>📅 5-Day Forecast</h3>
+      <div class="daily" id="dailyForecast"></div>
+    </div>
+
+    <div class="last-updated" id="lastUpdated"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <p>🌍 Weather App by <strong>Madhaw Verma</strong></p>
+    </div>
+    <div class="footer-links">
+      <a onclick="openModal('privacyModal')">📋 Privacy Policy</a>
+      <a onclick="openModal('contactModal')">📧 Contact Us</a>
+      <a onclick="openModal('aboutModal')">ℹ️ About</a>
+    </div>
+    <div class="footer-copyright">
+      <p>&copy; 2026 Weather Website by Madhaw Verma. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Privacy Policy Modal -->
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📋 Privacy Policy</h2>
+        <span class="close-btn" onclick="closeModal('privacyModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <h3>Weather Website</h3>
+        <p><strong>Owner: Madhaw Verma</strong></p>
+        <p><strong>Last Updated:</strong> March 2026</p>
+
+        <h3>1. Introduction</h3>
+        <p>Welcome to the Weather Website operated by <strong>Madhaw Verma</strong>. Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you use our website.</p>
+        <p>By using this website, you agree to the terms described in this Privacy Policy.</p>
+
+        <h3>2. Information We Collect</h3>
+        <p>Our weather website may collect the following types of information:</p>
+        <ul>
+          <li><strong>Location Information:</strong> To provide accurate weather forecasts, the website may request access to your device location or use the city name you search for.</li>
+          <li><strong>Usage Data:</strong> Browser type, device type, pages visited, time spent on the website - helping us improve website performance.</li>
+          <li><strong>Cookies:</strong> To remember user preferences, improve functionality, and analyze website traffic. You can disable cookies through your browser settings.</li>
+        </ul>
+
+        <h3>3. How We Use Your Information</h3>
+        <p>The information collected is used for the following purposes:</p>
+        <ul>
+          <li>To provide weather forecasts for selected cities</li>
+          <li>To improve website functionality</li>
+          <li>To analyze website performance</li>
+          <li>To enhance user experience</li>
+        </ul>
+        <p><strong>We do NOT sell, rent, or trade your personal information.</strong></p>
+
+        <h3>4. Third-Party Services</h3>
+        <p>Our website uses third-party services such as OpenWeatherMap API to display weather data. These services may collect limited technical information according to their own privacy policies.</p>
+
+        <h3>5. Data Security</h3>
+        <p>We take reasonable security measures to protect user information. However, no internet transmission is completely secure, and we cannot guarantee absolute security.</p>
+
+        <h3>6. Children's Privacy</h3>
+        <p>This website is not intended for children under the age of 13. We do not knowingly collect personal information from children.</p>
+
+        <h3>7. External Links</h3>
+        <p>Our website may contain links to other websites. We are not responsible for the privacy practices of those external websites.</p>
+
+        <h3>8. Changes to This Privacy Policy</h3>
+        <p>We may update this Privacy Policy from time to time. Any updates will be posted on this page with the updated date.</p>
+
+        <h3>9. Contact Information</h3>
+        <p>If you have any questions regarding this Privacy Policy, you can contact:</p>
+        <p><strong>Email:</strong> <a href="mailto:madhawvearma@gmail.com">madhawvearma@gmail.com</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Modal -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📧 Contact Us</h2>
+        <span class="close-btn" onclick="closeModal('contactModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <h3>Get in Touch</h3>
+        <p>Have questions, feedback, or suggestions? We'd love to hear from you!</p>
+
+        <h3>Contact Details</h3>
+        <p><strong>Developer:</strong> Madhaw Verma</p>
+        <p><strong>Email:</strong> <a href="mailto:madhawvearma@gmail.com">madhawvearma@gmail.com</a></p>
+		<p><strong>Instagram:</strong><a href="https://www.instagram.com/madhaw.18"> Follow US-CLICK HERE</a></strong></p>
+		<p><strong>WhatsApp:</strong> <a href="https://wa.me/918770152422" target="_blank">Chat with us - 8770152422</a></p>
+		<p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/madhawverma18" target="_blank">Connect with us</a></p>
+		
+
+        <h3>Website Information</h3>
+        <p>This is a <strong>Real-Time Weather Application</strong> that provides:</p>
+        <ul>
+          <li>Current weather conditions</li>
+          <li>5-day weather forecasts</li>
+          <li>Real-time humidity, wind speed, and pressure data</li>
+          <li>Air Quality Index (AQI) with pollutant details</li>
+          <li>Support for 250+ Indian cities</li>
+        </ul>
+
+        <h3>Feedback</h3>
+        <p>Your feedback helps us improve the application. Please feel free to reach out with suggestions or report any issues.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Modal -->
+  <div id="aboutModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>ℹ️ About This App</h2>
+        <span class="close-btn" onclick="closeModal('aboutModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <h3>Real-Time Weather Application</h3>
+        <p><strong>Version:</strong> 1.0</p>
+        <p><strong>Developer:</strong> Madhaw Verma</p>
+        <p><strong>Created:</strong> March 2026</p>
+
+        <h3>Features</h3>
+        <ul>
+          <li>🌡️ Real-time temperature and weather conditions</li>
+          <li>💧 Humidity levels</li>
+          <li>🌧️ Rainfall data (last 3 hours)</li>
+          <li>💨 Wind speed information</li>
+          <li>🔽 Atmospheric pressure</li>
+          <li>📊 Air Quality Index (AQI) with 6 pollutant measurements</li>
+          <li>📅 5-day weather forecast</li>
+          <li>🇮🇳 Support for 250+ Indian cities</li>
+        </ul>
+
+        <h3>Data Sources</h3>
+        <p>This application uses the following APIs:</p>
+        <ul>
+          <li><strong>Weather Data:</strong> OpenWeatherMap API</li>
+          <li><strong>Air Quality Data:</strong> OpenWeatherMap Air Pollution API</li>
+        </ul>
+
+        <h3>Technology Stack</h3>
+        <ul>
+          <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript, ReactJs, Nodejs, Expressjs, MongoDB, Python</li>
+          <li><strong>API:</strong> RESTful APIs</li>
+          <li><strong>Responsive Design:</strong> Mobile-friendly interface</li>
+        </ul>
+
+        <h3>Privacy & Security</h3>
+        <p>Your privacy is our priority. All data is handled according to our Privacy Policy. We do not store or sell your personal information.</p>
+      </div>
+    </div>
+  </div>
+<script src="script.js"></script>
+
+</body>
+</html>
