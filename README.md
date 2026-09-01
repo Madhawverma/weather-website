@@ -117,6 +117,8 @@ A comprehensive, responsive weather application that provides real-time weather 
 ### Method 2: Web Server Hosting
 ```bash
 # Clone or download the repository
+#madhaw
+
 git clone https://github.com/yourusername/weather-app.git
 cd weather-app
 
